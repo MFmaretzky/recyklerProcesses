@@ -126,12 +126,7 @@ namespace console1 {
         }
 
         public virtual void Process(GpioController gpio) {
-            int query = Console.Read();
-            if (query == 'o') {
-                this.OpenHatch(gpio);
-            } else if (query == 'c') {
-                this.CloseHatch(gpio);                
-            }
+            throw new NotImplementedException();
         }
     }
 }

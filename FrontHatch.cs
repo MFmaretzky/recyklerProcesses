@@ -8,6 +8,13 @@ namespace console1 {
         : base(upperSensorPin, lowerSensorPin, middleSensorPin, bridgeEnablePin, cwPolarisationPin, ccwPolarisationPin) {
 
         }
-        
+        public override void Process(GpioController gpio) {
+            int query = Console.Read();
+            if (query == 'o') {
+                this.OpenHatch(gpio);
+            } else if (query == 'c') {
+                this.CloseHatch(gpio);                
+            }
+        }
     }
 }
