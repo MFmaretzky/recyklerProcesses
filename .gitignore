@@ -1,0 +1,21 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+
+# Rider project files
+.idea/
+
+# VS Code workspace files
+.vscode/
+
+# Ignore logs and  temporary files
+*.log
+*.temporary
+
+# System files
+.DS_Store
+Thumbs.db
