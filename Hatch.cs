@@ -1,4 +1,5 @@
 using System.Device.Gpio;
+using System.Threading;
 
 namespace console1 {
     public abstract class Hatch : IHatch {
@@ -39,20 +40,6 @@ namespace console1 {
             set { _CCwPolarisationPin = value; }
         }
 
-        public Hatch(int upperSensorPin, int lowerSensorPin, int middleSensorPin, int bridgeEnablePin, int cwPolarisationPin, int ccwPolarisationPin) {
-            _upperSensorPin = upperSensorPin;
-            _lowerSensorPin = lowerSensorPin;
-            _middleSensorPin = middleSensorPin;
-            _bridgeEnablePin = bridgeEnablePin;
-            _CWPolarisationPin = cwPolarisationPin;
-            _CCwPolarisationPin = ccwPolarisationPin;
-        }
-
-        public virtual void SensorsInit(GpioController gpio) {
-            gpio.OpenPin(this.UpperSensorPin, PinMode.Input);
-            gpio.OpenPin(this.LowerSensorPin, PinMode.Input);
-        }
-
         public virtual void OpenOutPins(GpioController gpio) {
             gpio.OpenPin(this.BridgeEnablePin, PinMode.Output);
             gpio.OpenPin(this.CWPolarisationPin, PinMode.Output);
@@ -65,50 +52,27 @@ namespace console1 {
             gpio.ClosePin(this.CCwPolarisationPin);
         }
 
-        public virtual void OpenHatch(GpioController gpio) {
-            OpenOutPins(gpio);
-            gpio.Write(this.BridgeEnablePin, PinValue.Low);
-            gpio.Write(this.CWPolarisationPin, PinValue.Low);
-            gpio.Write(this.CCwPolarisationPin, PinValue.Low);
+        public virtual void OpenHatch(GpioController gpio, double steepLevel) {
+            RotorCtrl rotor = new RotorCtrl();
+            gpio.OpenPin(23, PinMode.Output);
+            gpio.Write(23, PinValue.High);
 
-            while (GetLowerStatus(gpio)) {
-                gpio.Write(this.CWPolarisationPin, PinValue.High);
-                gpio.Write(this.BridgeEnablePin, PinValue.High);
-                Thread.Sleep(2000);
-                if (1 == 1) {
-                    break;
-/* TODO: napisz warunek if middleSensor == high then break */
-                }
-            }
+            rotor.StartClockwise(steepLevel);
 
-            gpio.Write(this.CWPolarisationPin, PinValue.Low);
-            gpio.Write(this.CCwPolarisationPin, PinValue.Low);
-            gpio.Write(this.BridgeEnablePin, PinValue.Low);
-
-            CloseOutPins(gpio);
+            gpio.Write(23, PinValue.Low);
+            gpio.ClosePin(23);
         }
-        public virtual void CloseHatch(GpioController gpio) {
-            OpenOutPins(gpio);
-            gpio.Write(this.CWPolarisationPin, PinValue.Low);
-            gpio.Write(this.CCwPolarisationPin, PinValue.Low);
-            gpio.Write(this.BridgeEnablePin, PinValue.Low);
+        public virtual void CloseHatch(GpioController gpio, double steepLevel) {
+            RotorCtrl rotor = new RotorCtrl();
+            gpio.OpenPin(23, PinMode.Output);
+            gpio.Write(23, PinValue.High);
 
-            while (true/*GetUpperStatus(gpio)*/) {
-                gpio.Write(this.BridgeEnablePin, PinValue.High);
-                gpio.Write(this.CCwPolarisationPin, PinValue.High);
-                Thread.Sleep(2000);
-                if (1 == 1) {
-                    break;
-/* TODO: napisz warunek if middleSensor == high then break */
-                }
-            }
+            rotor.StartCounterClockwise(steepLevel);
 
-            gpio.Write(this.CWPolarisationPin, PinValue.Low);
-            gpio.Write(this.CCwPolarisationPin, PinValue.Low);
-            gpio.Write(this.BridgeEnablePin, PinValue.Low);
-
-            CloseOutPins(gpio);
+            gpio.Write(23, PinValue.Low);
+            gpio.ClosePin(23);
         }
+
         public virtual PinValue GetUpperStatus(GpioController gpio) {
             Console.WriteLine("Stan górnego czujnika: " + gpio.Read(this.UpperSensorPin));
             return gpio.Read(this.UpperSensorPin); 
