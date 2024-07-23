@@ -26,7 +26,5 @@ Also make sure you got latest .NET SDK release and assemble your board which has
 To properly run the device, set the parameters of the FrontHatch constructor with GPIO## with corresponding I/O pins on your Raspberry PI. Make sure always to initialise sensor pins with SensorInit method.
 
 ## TODO
-* Zaimplementować pwm na cwPolarisationPin i ccwPolarisationPin
-* Pwm oddzielnym threadem
 * Ogarnij układ czujników npn
 * I2C do kompomentu na nowe GPIO

@@ -12,16 +12,6 @@ namespace console1 {
         static void Main() {
             FrontHatch frontHatch = new FrontHatch();
             var gpio = new GpioController();
-            
-            // while (true) {
-            //     gpio.Write(25, PinValue.High);
-            //     //Console.WriteLine("High");
-            //     Console.WriteLine(gpio.Read(12));
-            //     Thread.Sleep(1000);
-            //     gpio.Write(25, PinValue.Low);
-            //     //Console.WriteLine("Low");
-            //     Thread.Sleep(1000);
-            // }
 
             while (true) {
                 frontHatch.Process(gpio);
@@ -40,6 +30,16 @@ namespace console1 {
         }        
     }
 }
+
+            // while (true) {
+            //     gpio.Write(25, PinValue.High);
+            //     //Console.WriteLine("High");
+            //     Console.WriteLine(gpio.Read(12));
+            //     Thread.Sleep(1000);
+            //     gpio.Write(25, PinValue.Low);
+            //     //Console.WriteLine("Low");
+            //     Thread.Sleep(1000);
+            // }
 
 
     // FrontHatch frontHatch = new FrontHatch(
