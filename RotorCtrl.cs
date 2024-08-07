@@ -24,24 +24,14 @@ namespace console1
             pwmPin.Start();
             return pwmPin;
         }
-        public void StartClockwise(PwmChannel pwmPin)
-        {
-            // chip2 channel2 - pin18
-            while (pwmPin.DutyCycle < 0.95)
-            {
-                pwmPin.DutyCycle += _steepLevel;
-                Thread.Sleep(10);
-            }
-        }
-
-        public void StartCounterClockwise(PwmChannel pwmPin)
+        public void StartRotate(PwmChannel pwmPin, int Sleep)
         {
             // chip2 channel3 - pin19
             pwmPin.Start();
-            while (pwmPin.DutyCycle < 0.95)
+            while (pwmPin.DutyCycle < _maxSpeed)
             {
                 pwmPin.DutyCycle += _steepLevel;
-                Thread.Sleep(10);
+                Thread.Sleep(Sleep);
             }
         }
         public void Stop(PwmChannel pwmPin)
