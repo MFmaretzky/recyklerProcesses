@@ -38,7 +38,6 @@ namespace console1
         {
             // chip2 channel3 - pin19
             pwmPin.Start();
-
             while (pwmPin.DutyCycle < 0.95)
             {
                 pwmPin.DutyCycle += _steepLevel;
