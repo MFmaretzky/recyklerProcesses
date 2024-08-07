@@ -26,5 +26,6 @@ Also make sure you got latest .NET SDK release and assemble your board which has
 To properly run the device, set the parameters of the FrontHatch constructor with GPIO## with corresponding I/O pins on your Raspberry PI. Make sure always to initialise sensor pins with SensorInit method.
 
 ## TODO
-* Ogarnij układ czujników npn
 * I2C do kompomentu na nowe GPIO
+* middleSensor powinien być wykorzystywany do stworzenia warunku do zatrzymania silnika w procesie closeHatch.
+* Stan czujnika dolnego powinien być zwracany z metody CloseHatch by określić czy zamknięcie przegrody zakończyło się sukcesem.
