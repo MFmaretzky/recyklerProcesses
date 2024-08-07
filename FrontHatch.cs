@@ -17,7 +17,7 @@ namespace console1
         public override void OpenHatch(GpioController gpio)
         {
             gpio.OpenPin(_bridgeEnablePin, PinMode.Output);
-            RotorCtrl rotor = new(2, 2, 400, 0.0, 0.05, 0.95);
+            RotorCtrl rotor = new(2, 2, 400, 0.0, 0.19, 0.95);
             var pwmPin = rotor.Init();
 
             List<PinValue> statuses = GetSenStat(gpio);
@@ -25,11 +25,11 @@ namespace console1
             if (statuses[1] == PinValue.Low)
             {
                 gpio.Write(_bridgeEnablePin, PinValue.High);
-                rotor.StartClockwise(pwmPin);
+                rotor.StartRotate(pwmPin, 50);
                 do
                 {
                     statuses = GetSenStat(gpio);
-                } while (statuses[0] == PinValue.High || statuses[2] == PinValue.High);
+                } while (statuses[0] == PinValue.High);
                 rotor.Stop(pwmPin);
             }
             else
@@ -52,11 +52,11 @@ namespace console1
             if (statuses[0] == PinValue.Low)
             {
                 gpio.Write(_bridgeEnablePin, PinValue.High);
-                rotor.StartCounterClockwise(pwmPin);
+                rotor.StartRotate(pwmPin, 5);
                 do
                 {
                     statuses = GetSenStat(gpio);
-                } while (statuses[1] == PinValue.High);
+                } while (statuses[1] == PinValue.High || statuses[2] == PinValue.High);
                 rotor.Stop(pwmPin);
             }
             else
